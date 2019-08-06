@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Adresse;
 import model.Besitzer;
 
 public class MainWindowController {
@@ -26,11 +27,15 @@ public class MainWindowController {
     @FXML
     void initialize() {
     	bDAO = new BesitzerDAO();
+    	setupUserList();
     	updateUserList();
     }
 	
     @FXML
     private ListView<Besitzer> userList;
+
+    @FXML
+    private ListView<Adresse> addressList;
 
     @FXML
     void btnOnActionAddUser(ActionEvent event) {
@@ -57,17 +62,46 @@ public class MainWindowController {
     void btnOnActionDeleteUser(ActionEvent event) {
     	Besitzer b = userList.getSelectionModel().getSelectedItem();
     	if (b != null) {
-    		if (Alerts.showWarningDialog("Willst du den Besitzer mit der Firmennummer '" + b.getFirma() + "' wirklich löschen?")) {
-    			bDAO.delete(b.getId());
-    			updateUserList();
-    		}
+    		if (b.getAdresses().size() == 0) {
+	    		if (Alerts.showWarningDialog("Willst du den Besitzer mit der Firmennummer '" + b.getFirma() + "' wirklich löschen?")) {
+	    			bDAO.delete(b.getId());
+	    			updateUserList();
+	    		}
+	    	} else {
+	    		Alerts.showErrorDialog("Sie können diesen Benutzer nicht löschen, da dieser noch über Adressen verfügt.");
+	    	}
     	}
+    }
+    
+    @FXML
+    void btnOnActionAddAddress(ActionEvent event) {
+    	System.out.println(">>> Add Address");
+    }
+    
+    @FXML
+    void btnOnActionDeleteAddress(ActionEvent event) {
+    	System.out.println(">>> Delete Address");
+    }
+    
+    private void setupUserList() {
+    	userList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+    		if (newVal != null) {
+    			updateAddressList(newVal);
+    		}
+    	});
     }
     
     private void updateUserList() {
     	userList.getItems().clear();
     	for (Besitzer b : bDAO.findAll()) {
     		userList.getItems().add(b);
+    	}
+    }
+    
+    private void updateAddressList(Besitzer besitzer) {
+    	addressList.getItems().clear();
+    	for (Adresse adresse : besitzer.getAdresses()) {
+    		addressList.getItems().add(adresse);
     	}
     }
 

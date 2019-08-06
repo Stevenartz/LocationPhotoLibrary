@@ -3,6 +3,8 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 
 
 /**
@@ -26,7 +28,7 @@ public class Besitzer implements Serializable {
 	private String telefon;
 
 	//bi-directional many-to-one association to Adresse
-	@OneToMany(mappedBy="besitzer")
+	@OneToMany(mappedBy="besitzer", fetch = EAGER)
 	private List<Adresse> adresses;
 
 	public Besitzer() {

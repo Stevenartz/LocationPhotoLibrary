@@ -1,9 +1,15 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
@@ -146,6 +152,11 @@ public class Adresse implements Serializable {
 		adressePhoto.setAdresse(null);
 
 		return adressePhoto;
+	}
+	
+	@Override
+	public String toString() {
+		return getStrasse();
 	}
 
 }

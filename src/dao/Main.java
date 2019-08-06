@@ -19,10 +19,23 @@ public class Main {
 	Main() {
 		
 		BesitzerDAO bDAO = new BesitzerDAO();
-		System.out.println(bDAO.findById(1).getAnsprechpartner());
+		AdresseDAO aDAO = new AdresseDAO();
+		System.out.println(bDAO.findById(1).getAdresses());
 		System.out.println(">>> Before: " + bDAO.findAll());
 
 		
+		// ADD
+//		Adresse ad = new Adresse();
+//		ad.setStrasse("Seebelstrasse 31");
+//		ad.setPlz("8422");
+//		ad.setOrt("Pfungen");
+//		ad.setGebaeude("VZA");
+//		ad.setBesitzer(bDAO.findById(1));
+//		
+//		aDAO.create(ad);
+		
+		// DELETE
+//		System.out.println(aDAO.delete(1));
 		
 		// ADD
 //		Besitzer besitzer = new Besitzer();

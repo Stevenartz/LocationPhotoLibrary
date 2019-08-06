@@ -6,10 +6,6 @@ import model.Besitzer;
 
 public class BesitzerDAO extends AbstractDAO {
 
-	public BesitzerDAO() {
-		super();
-	}
-	
 	public Besitzer findById(int id) {
 		return (Besitzer) super.findById(Besitzer.class, id);
 	}
