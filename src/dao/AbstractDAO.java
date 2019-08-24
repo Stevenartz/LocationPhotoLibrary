@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import config.JPAUtil;
+import model.Photo;
 
 public abstract class AbstractDAO {
 
@@ -26,6 +27,9 @@ public abstract class AbstractDAO {
     }
 	
     protected void create(Object object) {
+    	if (object instanceof Photo) {
+    		System.out.println(">>> Photo class");
+    	}
     	EntityManager em = JPAUtil.newEntityManager();
     	em.getTransaction().begin();
     	em.persist(object);

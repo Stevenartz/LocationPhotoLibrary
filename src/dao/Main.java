@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import config.JPAUtil;
 import model.Adresse;
 import model.Besitzer;
+import model.Photo;
 
 public class Main {
 
@@ -18,11 +19,13 @@ public class Main {
 	
 	Main() {
 		
-		BesitzerDAO bDAO = new BesitzerDAO();
-		AdresseDAO aDAO = new AdresseDAO();
-		System.out.println(bDAO.findById(1).getAdresses());
-		System.out.println(">>> Before: " + bDAO.findAll());
-
+		PhotoDAO pDAO = new PhotoDAO();
+		pDAO.create(new Photo());
+		
+//		BesitzerDAO bDAO = new BesitzerDAO();
+//		AdresseDAO aDAO = new AdresseDAO();
+//		System.out.println(bDAO.findById(1).getAdresses());
+//		System.out.println(">>> Before: " + bDAO.findAll());
 		
 		// ADD
 //		Adresse ad = new Adresse();
@@ -48,7 +51,7 @@ public class Main {
 //		Besitzer besitzer = bDAO.findById(2);
 //		System.out.println(bDAO.delete(6));
 		
-		System.out.println(">>> After: " + bDAO.findAll());
+//		System.out.println(">>> After: " + bDAO.findAll());
 	}
 	
 	
