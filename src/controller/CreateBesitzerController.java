@@ -57,7 +57,7 @@ public class CreateBesitzerController {
     	}
     }
     
-    public boolean checkIfInputValid() {
+    private boolean checkIfInputValid() {
     	boolean status = false;
     	if (!tfFirma.getText().trim().equals("")) {
     		try {

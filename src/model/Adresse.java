@@ -10,6 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import static javax.persistence.FetchType.EAGER;
 
 
 /**
@@ -46,7 +47,7 @@ public class Adresse implements Serializable {
 	private Besitzer besitzer;
 
 	//bi-directional many-to-one association to AdressePhoto
-	@OneToMany(mappedBy="adresse")
+	@OneToMany(mappedBy="adresse", fetch = EAGER)
 	private List<AdressePhoto> adressePhotos;
 
 	public Adresse() {

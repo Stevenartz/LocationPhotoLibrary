@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import custom.Alerts;
+import dao.AdresseDAO;
 import dao.BesitzerDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +20,9 @@ public class MainWindowController {
 	private Stage primaryStage;
 
 	private BesitzerDAO bDAO;
+	private AdresseDAO aDAO;
+	
+	private Besitzer selectedBesitzer = null;
 	
 	public MainWindowController(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -27,6 +31,7 @@ public class MainWindowController {
     @FXML
     void initialize() {
     	bDAO = new BesitzerDAO();
+    	aDAO = new AdresseDAO();
     	setupUserList();
     	updateUserList();
     }
@@ -75,21 +80,53 @@ public class MainWindowController {
     
     @FXML
     void btnOnActionAddAddress(ActionEvent event) {
-    	System.out.println(">>> Add Address");
+    	if (selectedBesitzer != null) {
+	    	Stage createAdresseStage = new Stage();
+	    	
+	    	createAdresseStage.initModality(Modality.WINDOW_MODAL);
+	    	createAdresseStage.initOwner(primaryStage);
+	    	
+	    	FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CreateAdresse.fxml"));
+	    	loader.setController(new CreateAdresseController(createAdresseStage, this.selectedBesitzer));
+	    	
+	    	try {
+	    		createAdresseStage.setScene(new Scene(loader.load()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    	
+	    	createAdresseStage.setTitle("Adresse hinzufügen");
+	    	createAdresseStage.showAndWait();
+	    	updateAddressList();
+    	} else {
+    		Alerts.showWarningDialog("Stelle sicher, dass du einen Besitzer ausgewählt hast!");
+    	}
+    		
     }
     
     @FXML
     void btnOnActionDeleteAddress(ActionEvent event) {
-    	System.out.println(">>> Delete Address");
+    	Adresse a = addressList.getSelectionModel().getSelectedItem();
+    	if (a != null) {
+    		if (a.getAdressePhotos().size() == 0) {
+    			if (Alerts.showWarningDialog("Willst du die Adresse mit an der '" + a.getStrasse() + "' wirklich löschen?")) {
+    				aDAO.delete(a.getId());
+    				updateAddressList();
+    			}
+    		}
+    	}
     }
     
     private void setupUserList() {
     	userList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
     		if (newVal != null) {
-    			updateAddressList(newVal);
+    			this.selectedBesitzer = newVal;
+    			updateAddressList();
     		}
     	});
     }
+    
+    
     
     private void updateUserList() {
     	userList.getItems().clear();
@@ -98,9 +135,10 @@ public class MainWindowController {
     	}
     }
     
-    private void updateAddressList(Besitzer besitzer) {
+    private void updateAddressList() {
+    	this.selectedBesitzer = bDAO.findById(this.selectedBesitzer.getId());
     	addressList.getItems().clear();
-    	for (Adresse adresse : besitzer.getAdresses()) {
+    	for (Adresse adresse : this.selectedBesitzer.getAdresses()) {
     		addressList.getItems().add(adresse);
     	}
     }
