@@ -1,5 +1,7 @@
 # LocationPhotoLibrary
 
+SET @@global.time_zone = '+00:00';
+
 # Contributors
 
 <table>
